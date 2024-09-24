@@ -53,7 +53,41 @@
 			<input type="peso" class="form-control rounded-3" id="floatingPeso" placeholder="Peso">
 			<label for="floatingPassword">Peso</label>
 		  </div>
-		<button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Confirmar</button>
+		  <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" id="confirmCadastro" type="button">Confirmar</button>
+		  <script>
+			document.getElementById("confirmCadastro").addEventListener("click", async function(event) {
+				event.preventDefault();
+				const login = document.getElementById("floatingLogin").value.trim();
+    			const senha = document.getElementById("floatingSenha").value.trim(); 
+    			const peso = parseFloat(document.getElementById("floatingPeso").value.trim());
+				const dados = {
+					login: login,
+					senha: senha,
+					peso: peso
+				};
+				try {
+					const response = await fetch('http://localhost:3000/usuarios/adicionar', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(dados)
+					});
+			
+					if (response.ok) {
+						alert("Cadastro realizado com sucesso!");
+						const modal = bootstrap.Modal.getInstance(document.getElementById('modalCadastro'));
+						modal.hide();
+					} else {
+						const erro = await response.json();
+						alert(`Erro ao cadastrar: ${erro.message}`);
+					}
+				} catch (error) {
+					console.error("Erro ao fazer requisição:", error);
+					alert("Ocorreu um erro ao tentar cadastrar. Tente novamente.");
+				}
+			});
+			</script>
 	  </form>
 		</div>
 	  </div>
