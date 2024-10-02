@@ -31,12 +31,40 @@
 	</div>
 </header>
 <main class="text-bg-secondary p-3">
-	<div class="input-group flex-nowrap">
-		<span class="input-group-text" id="addon-wrapping">
+	<div class="container center-container">
+		<span class="input-group-text w-100 mb-2  custom-width-10" id="addon-wrapping">
 			<i class="bi bi-search"></i>
 		  </span>
-		<input type="text" class="form-control" placeholder="Digite o alimento que procura" aria-label="Alimento" aria-describedby="addon-wrapping">
-		<button class="btn btn-primary" onclick="sendData()">Enviar</button>
+		<input type="text" class="form-control w-100 mb-2  custom-width-70" placeholder="Digite o alimento que procura" aria-label="Alimento" aria-describedby="addon-wrapping" id="nomeAlimento">
+		<button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary custom-width-10" id="pesquisarAlimento" type="button">Confirmar</button>
+		<script>
+			document.getElementById("pesquisarAlimento").addEventListener("click", async function(event) {
+				event.preventDefault();
+    			const nome = document.getElementById("nomeAlimento").value.trim(); 
+				const dados = {
+					nome: nome
+				};
+				try {
+					const response = await fetch('http://localhost:3000/alimentosApp/pesquisar/nome', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(dados)
+					});
+			
+					if (response.ok) {
+						alert("Pesquisa realizado com sucesso!");
+					} else {
+						const erro = await response.json();
+						alert(`Erro ao pesquisar: ${erro.message}`);
+					}
+				} catch (error) {
+					console.error("Erro ao fazer requisição:", error);
+					alert("Ocorreu um erro ao tentar pesquisar. Tente novamente.");
+				}
+			});
+			</script>
 	  </div>
 </main>
 <div class="modal fade p-4 py-md-5" tabindex="-1" role="dialog" id="modalCadastro">

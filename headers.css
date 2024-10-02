@@ -95,3 +95,23 @@ main {
 footer {
 	margin-top: auto;
 }
+.center-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+}
+.custom-width-10 {
+	flex: 0 0 1%;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+.custom-width-70 {
+	flex: 0 0 60%;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+.custom-width-20 {
+	flex: 0 0 10%;
+	height: 100%;
+}
