@@ -26,11 +26,21 @@ function Alimento() {
       {searchPerformed && filteredAlimentos.length === 0 ? (
         <p>Nenhum alimento encontrado.</p>
       ) : (
-        <ul>
+        <div>
           {filteredAlimentos.map((alimento) => (
-            <li key={alimento.id}>{alimento.nomeAlimentoApp}</li>
+            <div key={alimento.id} className="alimento-card">
+              <h3>{alimento.nomeAlimentoApp}</h3>
+              <p>Porção: {alimento.porcao}g</p>
+              <p>Calorias: {alimento.caloria.toFixed(2)}</p>
+              <p>Proteína: {alimento.proteina.toFixed(2)}g</p>
+              <p>Carboidratos: {alimento.carboidrato.toFixed(2)}g</p>
+              <p>Gorduras Saturadas: {alimento.saturados.toFixed(2)}g</p>
+              <p>Gorduras Monoinsaturadas: {alimento.monoinsaturados.toFixed(2)}g</p>
+              <p>Gorduras Poliinsaturadas: {alimento.poliinsaturados.toFixed(2)}g</p>
+              <p>Gordura Total: {alimento.gordutaTotal.toFixed(2)}g</p>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
