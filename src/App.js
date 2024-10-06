@@ -9,6 +9,7 @@ import "./App.css";
 import Login from "./components/Login";
 import Cadastro from "./components/Cadastro";
 import Alimento from "./components/Alimento";
+import Perfil from "./components/Perfil";
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />
             <Route path="/cadastro" element={<Cadastro />} />
-            <Route path="/perfil" element={<Cadastro />} />
+            <Route path="/perfil" element={<Perfil />} />
             <Route path="/alimento" element={<Alimento />} />
           </Routes>
         </header>

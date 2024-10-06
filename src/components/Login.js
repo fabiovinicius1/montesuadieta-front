@@ -22,9 +22,9 @@ function Login() {
   
 		if (response.status === 201) {
 		  setMensagem('Login feito com sucesso!');
-		//   setTimeout(() => {
-		// 	  navigate('/perfil');
-		// 	}, 2000);
+		  const token = response.data;
+		  localStorage.setItem("token", token); // Armazena o token no localStorage
+		  navigate("/perfil"); // Redireciona para a página de perfil
 		} else {
 		  setMensagem('erro login');
 		}

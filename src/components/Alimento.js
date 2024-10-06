@@ -8,10 +8,14 @@ function Alimento() {
 
   const handleSearch = async (searchTerm) => {
     try {
-      const response = await axios.post(
+      const response = await axios.get(
         "http://localhost:3000/alimentosApp/pesquisar/nome",
-        { nomeAlimentoApp: searchTerm }
-      );
+		{
+		  params: {
+			nomeAlimentoApp: searchTerm
+		  }
+		}
+	  );
       setFilteredAlimentos(response.data);
       setSearchPerformed(true);
     } catch (error) {
