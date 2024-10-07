@@ -185,25 +185,33 @@ function Perfil() {
       </Modal>
 
       {/* Modal para listar refeições */}
-      <Modal
-        show={showListarRefeicoesModal}
-        onHide={handleCloseListarRefeicoesModal}
-      >
+	  <Modal show={showListarRefeicoesModal} onHide={handleCloseListarRefeicoesModal}>
         <Modal.Header closeButton>
           <Modal.Title>Listar Refeições</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <ListGroup>
-            {refeicoes.length > 0 ? (
-              refeicoes.map((refeicao, index) => (
+          {refeicoes.length > 0 ? (
+            <ListGroup>
+              {refeicoes.map((refeicao, index) => (
                 <ListGroup.Item key={index}>
-                  {refeicao.nomeRefeicao}
+                  <strong>{refeicao.nomeRefeicao}</strong>
+                  {refeicao.alimentosRefeicao.length > 0 ? (
+                    <ul>
+                      {refeicao.alimentosRefeicao.map((alimento, i) => (
+                        <li key={i}>
+                          Nome: {alimento.nomeAlimentoRefeicao} - Quantidade {alimento.quantidade}g - Caloria {alimento.caloria}g - Proteina {alimento.proteina}g - Carboidrato {alimento.carboidrato}g - GordutaTotal {alimento.gordutaTotal}g
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>Sem alimentos para esta refeição.</p>
+                  )}
                 </ListGroup.Item>
-              ))
-            ) : (
-              <p>Nenhuma refeição encontrada.</p>
-            )}
-          </ListGroup>
+              ))}
+            </ListGroup>
+          ) : (
+            <p>Nenhuma refeição encontrada.</p>
+          )}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseListarRefeicoesModal}>
