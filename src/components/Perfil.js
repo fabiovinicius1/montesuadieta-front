@@ -93,9 +93,23 @@ function Perfil() {
     }
   };
 
-  const handleAdicionarAlimento = () => {
-    console.log("Alimento adicionado:", nomeAlimento);
-    handleCloseAlimentoModal();
+  const handleAdicionarAlimento = async () => {
+	try {
+		const token = localStorage.getItem("token");
+		await axios.post(
+		  "http://localhost:3000/refeicoes/adicionar/alimento/refeicao",
+		  { nomeRefeicao: nomeRefeicao, nomeAlimento: nomeAlimento}, // Enviando o nome da refeição pelo corpo da requisição
+		  {
+			headers: {
+			  Authorization: `${token}`,
+			},
+		  }
+		);
+		console.log("aliemnto adicionado na refeicao:", nomeRefeicao);
+		handleCloseAlimentoModal(); // Fecha o modal após salvar
+	  } catch (error) {
+		console.error("Erro ao adicionar refeição:", error);
+	  }
   };
 
   if (!userData) {
@@ -170,6 +184,15 @@ function Perfil() {
                 placeholder="Informe o nome do alimento"
                 value={nomeAlimento}
                 onChange={(e) => setNomeAlimento(e.target.value)}
+              />
+            </Form.Group>
+			<Form.Group>
+              <Form.Label>Nome da Refeição</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Informe o nome da Refeição"
+                value={nomeRefeicao}
+                onChange={(e) => setNomeRefeicao(e.target.value)}
               />
             </Form.Group>
           </Form>
