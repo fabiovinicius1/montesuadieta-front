@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaWeight } from "react-icons/fa"; // Importa um ícone de peso
-import { Modal, Button, Form } from "react-bootstrap"; // Usando Bootstrap para modais
+import { Modal, Button, Form , ListGroup} from "react-bootstrap"; // Usando Bootstrap para modais
 import { useNavigate } from "react-router-dom";
 function Perfil() {
   const [userData, setUserData] = useState(null);
@@ -9,6 +9,9 @@ function Perfil() {
   const [showAlimentoModal, setShowAlimentoModal] = useState(false);
   const [nomeRefeicao, setNomeRefeicao] = useState("");
   const [nomeAlimento, setNomeAlimento] = useState("");
+  const [showListarRefeicoesModal, setShowListarRefeicoesModal] =
+    useState(false);
+  const [refeicoes, setRefeicoes] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,12 +50,36 @@ function Perfil() {
   const handleCloseAlimentoModal = () => setShowAlimentoModal(false);
   const handleShowAlimentoModal = () => setShowAlimentoModal(true);
 
+  const handleCloseListarRefeicoesModal = () =>
+    setShowListarRefeicoesModal(false);
+  const handleShowListarRefeicoesModal = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(
+        "http://localhost:3000/refeicoes/pesquisar/todas",
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+      setRefeicoes(response.data); // Salva a lista de refeições no estado
+	  console.log(response.data)
+      setShowListarRefeicoesModal(true); // Abre o modal
+    } catch (error) {
+      console.error(
+        "Erro ao listar refeições:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
   const handleAdicionarRefeicao = async () => {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
         "http://localhost:3000/refeicoes/adicionar",
-        { nomeRefeicao: nomeRefeicao, usuarioId: 1}, // Enviando o nome da refeição pelo corpo da requisição
+        { nomeRefeicao: nomeRefeicao, usuarioId: 1 }, // Enviando o nome da refeição pelo corpo da requisição
         {
           headers: {
             Authorization: `${token}`,
@@ -91,6 +118,9 @@ function Perfil() {
           </Button>
           <Button variant="primary" onClick={handleShowAlimentoModal}>
             Adicionar Alimento
+          </Button>
+          <Button variant="primary" onClick={handleShowListarRefeicoesModal}>
+            Listar Refeições
           </Button>
           <Button variant="primary" onClick={handlePesquisarAlimento}>
             Pesquisar Alimento
@@ -150,6 +180,34 @@ function Perfil() {
           </Button>
           <Button variant="primary" onClick={handleAdicionarAlimento}>
             Salvar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Modal para listar refeições */}
+      <Modal
+        show={showListarRefeicoesModal}
+        onHide={handleCloseListarRefeicoesModal}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Listar Refeições</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ListGroup>
+            {refeicoes.length > 0 ? (
+              refeicoes.map((refeicao, index) => (
+                <ListGroup.Item key={index}>
+                  {refeicao.nomeRefeicao}
+                </ListGroup.Item>
+              ))
+            ) : (
+              <p>Nenhuma refeição encontrada.</p>
+            )}
+          </ListGroup>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseListarRefeicoesModal}>
+            Fechar
           </Button>
         </Modal.Footer>
       </Modal>
